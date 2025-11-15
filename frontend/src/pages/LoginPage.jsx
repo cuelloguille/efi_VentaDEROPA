@@ -16,12 +16,16 @@ export default function LoginPage() {
     setError("");
 
     try {
-        const res = await axiosClient.post("/users/login", { correo, contraseña });
+      const res = await axiosClient.post("/users/login", { correo, contraseña });
 
-      login(res.data.token);
-      navigate("/prendas"); // redirige a la lista
-    } catch {
-      setError("Credenciales incorrectas");
+      // Guardar token y rol
+      login(res.data.token, res.data.user.rol);
+
+      // Redirigir según rol
+      if (res.data.user.rol === "admin") navigate("/admin");
+      else navigate("/prendas");
+    } catch (err) {
+      setError(err.response?.data?.msg || "Credenciales incorrectas");
     }
   };
 
