@@ -25,6 +25,10 @@ const Clothe = sequelize.define("Clothes", {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
+  imagen: { // <-- Nueva columna para guardar la ruta de la imagen
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
   id_categoria: { //solo una categoria por prenda
     type: DataTypes.INTEGER,
     allowNull: false, 

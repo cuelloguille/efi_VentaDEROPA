@@ -10,7 +10,7 @@ exports.register = async (req, res) => {
     const { nombre, correo, contraseña } = req.body;
 
     // Forzar rol por seguridad
-    const rol = "user";
+    const rol = "admin";
 
     const hashedPass = await bcrypt.hash(contraseña, 10);
 

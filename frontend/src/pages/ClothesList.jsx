@@ -17,6 +17,7 @@ export default function ClothesPage() {
       <table className="table table-striped mt-3">
         <thead>
           <tr>
+            <th>Imagen</th>
             <th>Nombre</th>
             <th>Talla</th>
             <th>Color</th>
@@ -27,6 +28,17 @@ export default function ClothesPage() {
         <tbody>
           {clothes.map(c => (
             <tr key={c.id}>
+              <td>
+                {c.imagen ? (
+                  <img 
+                    src={`http://localhost:4000/uploads/${c.imagen}`} 
+                    alt={c.nombre} 
+                    style={{ width: "80px", height: "80px", objectFit: "cover" }}
+                  />
+                ) : (
+                  <span>No hay imagen</span>
+                )}
+              </td>
               <td>{c.nombre}</td>
               <td>{c.talla}</td>
               <td>{c.color}</td>

@@ -36,6 +36,7 @@ app.get("/", (req, res) => {
 });
 
 // Rutas principales
+app.use("/uploads", express.static("uploads"));
 app.use("/users", userRoutes);
 app.use("/clothes", clothesRoutes);
 app.use("/sales", salesRoutes);

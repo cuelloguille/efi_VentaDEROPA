@@ -35,8 +35,8 @@ export default function Navbar() {
             {token ? (
               <>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/prendas">
-                    Prendas
+                  <Link className="nav-link" to="/prendas/nueva">
+                    Crear Prenda
                   </Link>
                 </li>
 
