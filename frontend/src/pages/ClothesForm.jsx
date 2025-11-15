@@ -12,11 +12,14 @@ export default function ClotheForm() {
   const [stock, setStock] = useState("");
   const [categorias, setCategorias] = useState([]);
   const [categoria, setCategoria] = useState("");
+  const [proveedores, setProveedores] = useState([]);
+  const [proveedor, setProveedoredor] = useState("");
   const [imagen, setImagen] = useState(null); // <-- nuevo estado para la imagen
   const [mensaje, setMensaje] = useState("");
 
   useEffect(() => {
     axiosClient.get("/categories").then(res => setCategorias(res.data));
+    axiosClient.get("/suppliers").then(res => setProveedores(res.data));
   }, []);
 
   const handleSubmit = async (e) => {
@@ -29,7 +32,8 @@ export default function ClotheForm() {
       formData.append("color", color);
       formData.append("precio", precio);
       formData.append("stock", stock);
-      formData.append("id_categoria", categoria);
+      formData.append("id_category", categoria);
+      formData.append("id_proveedor", proveedor);
       if (imagen) formData.append("imagen", imagen);
 
       // Si tu backend requiere token de auth
@@ -38,7 +42,7 @@ export default function ClotheForm() {
       await axiosClient.post("/clothes", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: token ? `Bearer ${token}` : undefined,
+          Authorization: token ? `bearer ${token}` : undefined,
         },
       });
 
@@ -102,9 +106,23 @@ export default function ClotheForm() {
           required
         >
           <option value="">Seleccione categoría</option>
-          {categorias.map(cat => (
+          { categorias.map(cat => (
             <option key={cat.id} value={cat.id}>
               {cat.nombre}
+            </option>
+          ))}
+        </select>
+
+        <select
+          className="form-select mb-2"
+          value={proveedor}
+          onChange={e => setProveedoredor(e.target.value)}
+          required
+        >
+          <option value="">Seleccione proveedor</option>
+          { proveedores.map(prov => (
+            <option key={prov.id} value={prov.id}>
+              {prov.nombre}
             </option>
           ))}
         </select>
@@ -122,3 +140,4 @@ export default function ClotheForm() {
     </div>
   );
 }
+
