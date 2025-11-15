@@ -6,6 +6,7 @@ import Navbar from "./componnets/navbar";  // ⬅️ IMPORTAR NAVBAR
 import LoginPage from "./pages/LoginPage";
 import ClothesPage from "./pages/ClothesList";
 import RegisterPage from "./pages/RegisterPage";
+import ClotheForm from "./pages/ClothesForm";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/prendas" element={<ClothesPage />} />
+          <Route path="/prendas/nueva" element={<ClotheForm />} />
         </Routes>
 
       </BrowserRouter>
