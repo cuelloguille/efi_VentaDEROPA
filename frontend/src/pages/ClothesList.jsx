@@ -23,6 +23,8 @@ export default function ClothesPage() {
             <th>Color</th>
             <th>Precio</th>
             <th>Stock</th>
+            <th>Categoría</th>
+            <th>Proveedor</th>
           </tr>
         </thead>
         <tbody>
@@ -39,11 +41,15 @@ export default function ClothesPage() {
                   <span>No hay imagen</span>
                 )}
               </td>
+
               <td>{c.nombre}</td>
               <td>{c.talla}</td>
               <td>{c.color}</td>
               <td>${c.precio}</td>
               <td>{c.stock}</td>
+
+              <td>{c.Category?.nombre || "-"}</td>
+              <td>{c.Supplier?.nombre || "-"}</td>
             </tr>
           ))}
         </tbody>

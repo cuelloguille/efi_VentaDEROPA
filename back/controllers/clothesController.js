@@ -1,18 +1,30 @@
 const Clothe = require("../models/Clothes");
+const Supplier = require("../models/Supplier");
+const Category = require("../models/Category");
 const { Op } = require("sequelize");
 const fs = require("fs");
 const path = require("path");
 
-// Obtener todas las prendas con filtros
+// ===============================
+//  GET ALL
+// ===============================
 exports.getAll = async (req, res) => {
   try {
     const { talla, color, q } = req.query;
+
     const where = {};
     if (talla) where.talla = talla;
     if (color) where.color = color;
     if (q) where.nombre = { [Op.like]: `%${q}%` };
 
-    const clothes = await Clothe.findAll({ where });
+    const clothes = await Clothe.findAll({
+      where,
+      include: [
+        { model: Supplier, as: "Supplier", attributes: ["id", "nombre"] },
+        { model: Category, as: "Category", attributes: ["id", "nombre"] },
+      ]
+    });
+
     res.json(clothes);
   } catch (error) {
     console.error(error);
@@ -20,11 +32,14 @@ exports.getAll = async (req, res) => {
   }
 };
 
-// Crear prenda con imagen
+// ===============================
+//  CREATE
+// ===============================
 exports.create = async (req, res) => {
   try {
     const { nombre, talla, color, precio, stock, id_categoria, id_proveedor } = req.body;
-    const imagen = req.file ? req.file.filename : null; // obtener el nombre del archivo
+
+    const imagen = req.file ? req.file.filename : null;
 
     const clothe = await Clothe.create({
       nombre,
@@ -44,14 +59,15 @@ exports.create = async (req, res) => {
   }
 };
 
-// Actualizar prenda (incluyendo imagen)
+// ===============================
+//  UPDATE
+// ===============================
 exports.update = async (req, res) => {
   try {
     const { id } = req.params;
     const clothe = await Clothe.findByPk(id);
     if (!clothe) return res.status(404).json({ msg: "Prenda no encontrada" });
 
-    // Si se envía una nueva imagen, borramos la anterior
     if (req.file) {
       if (clothe.imagen) {
         const oldPath = path.join(__dirname, "..", "uploads", clothe.imagen);
@@ -61,6 +77,7 @@ exports.update = async (req, res) => {
     }
 
     await Clothe.update(req.body, { where: { id } });
+
     res.json({ msg: "Prenda actualizada" });
   } catch (error) {
     console.error(error);
@@ -68,20 +85,22 @@ exports.update = async (req, res) => {
   }
 };
 
-// Eliminar prenda (incluyendo imagen)
+// ===============================
+//  DELETE
+// ===============================
 exports.remove = async (req, res) => {
   try {
     const { id } = req.params;
     const clothe = await Clothe.findByPk(id);
     if (!clothe) return res.status(404).json({ msg: "Prenda no encontrada" });
 
-    // Borrar imagen si existe
     if (clothe.imagen) {
       const imagePath = path.join(__dirname, "..", "uploads", clothe.imagen);
       if (fs.existsSync(imagePath)) fs.unlinkSync(imagePath);
     }
 
     await Clothe.destroy({ where: { id } });
+
     res.json({ msg: "Prenda eliminada" });
   } catch (error) {
     console.error(error);
