@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 export default function CarritoPage() {
   const [carrito, setCarrito] = useState([]);
@@ -28,7 +29,29 @@ export default function CarritoPage() {
   };
 
   // Total $
-  const total = carrito.reduce((acc, item) => acc + item.precio, 0);
+  const total = carrito.reduce((acc, item) => acc + Number(item.precio), 0);
+
+
+
+  // ===========================
+  // FINALIZAR COMPRA → EMAIL
+  // ===========================
+  const finalizarCompra = async () => {
+    try {
+      const res = await axios.post("http://localhost:4000/enviar-correo", {
+        items: carrito,
+        total: total,
+      });
+
+      if (res.data.ok) {
+        alert("Compra realizada. Se envió un correo con el detalle.");
+        vaciar();
+      }
+    } catch (err) {
+      console.log(err);
+      alert("Error enviando el correo.");
+    }
+  };
 
   return (
     <div className="container mt-4">
@@ -83,7 +106,10 @@ export default function CarritoPage() {
                 Vaciar carrito
               </button>
 
-              <button className="btn btn-success">
+              <button
+                className="btn btn-success"
+                onClick={finalizarCompra}
+              >
                 Finalizar compra
               </button>
             </div>
