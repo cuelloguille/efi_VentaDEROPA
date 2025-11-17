@@ -17,7 +17,10 @@ export default function Navbar() {
       }`}
     >
       <div className="container-fluid">
-        <Link className="navbar-brand" to="/prendas">
+
+        {/* HOME ICONO A LA IZQUIERDA */}
+        <Link className="navbar-brand d-flex align-items-center" to="/prendas">
+          <i className="bi bi-house-door-fill fs-4 me-2"></i>
           {rol === "admin" ? "Bienvenido Admin" : "ClotStore"}
         </Link>
 
@@ -65,34 +68,25 @@ export default function Navbar() {
               </>
             )}
 
-            {/* LINKS USER */}
-            {token && rol === "user" && (
-              <>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/prendas">
-                    Lista de Prendas
-                  </Link>
-                </li>
-              </>
-            )}
 
-            {/* CARRITO - SOLO LOGUEADOS */}
+            {/* CARRITO */}
             {token && (
               <li className="nav-item d-flex align-items-center">
-                <Link className="nav-link fs-4" to="/carrito">
+                <Link className="nav-link fs-4" to="/carrito" title="Carrito">
                   <i className="bi bi-cart"></i>
                 </Link>
               </li>
             )}
 
-            {/* LOGOUT */}
+            {/* BOTÓN DE LOGOUT CON ICONO DE APAGADO */}
             {token && (
               <li className="nav-item">
                 <button
-                  className="btn btn-danger ms-2"
+                  className="btn btn-danger ms-2 d-flex align-items-center"
                   onClick={handleLogout}
                 >
-                  Cerrar sesión
+                  <i className="bi bi-power fs-5 me-1"></i>
+                  Salir
                 </button>
               </li>
             )}
