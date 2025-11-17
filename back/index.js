@@ -16,7 +16,8 @@ const userRoutes = require("./routes/userRoutes");
 const clothesRoutes = require("./routes/clothesRoutes");
 const salesRoutes = require("./routes/saleRoutes");
 const categoryRoutes = require("./routes/categoryRoutes"); 
-const supplierRoutes = require("./routes/supplierRoutes");
+const supplierRoutes = require("./routes/supplierRoutes")
+const Email = require("./routes/EmailRoutes");
 
 const app = express();
 
@@ -42,6 +43,7 @@ app.use("/clothes", clothesRoutes);
 app.use("/sales", salesRoutes);
 app.use("/categories", categoryRoutes);
 app.use("/suppliers", supplierRoutes);
+app.use("/email", Email);
 
 // Sincronizar DB y levantar servidor
 sequelize

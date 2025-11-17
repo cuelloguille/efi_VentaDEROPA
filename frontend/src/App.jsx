@@ -12,6 +12,7 @@ import PageClothes from "./pages/PageClothes";
 import ClotheDetailUser from "./pages/PageClotheUser";
 import CartPage from "./pages/CartPage";
 
+
 function App() {
   return (
     <AuthProvider>
@@ -28,6 +29,7 @@ function App() {
           <Route path="/prendas" element={<PageClothes />} />
           <Route path="/prendas/:id" element={<ClotheDetailUser />} />
           <Route path="/carrito" element={<CartPage />} />
+          
 
           
         </Routes>

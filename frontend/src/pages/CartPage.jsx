@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { useAuth } from "../auth/AuthContext"; // ⬅ si usás AuthContext
 
 export default function CarritoPage() {
   const [carrito, setCarrito] = useState([]);
+  const { token } = useAuth(); // ⬅ token para enviar email autenticado
 
   // Cargar carrito desde localStorage
   useEffect(() => {
@@ -11,16 +13,15 @@ export default function CarritoPage() {
     setCarrito(data);
   }, []);
 
-  // Guardar cambios en localStorage
+  // Guardar cambios
   const guardar = (items) => {
     setCarrito(items);
     localStorage.setItem("carrito", JSON.stringify(items));
   };
 
-  // Eliminar un item
+  // Eliminar item
   const eliminar = (id) => {
-    const nuevo = carrito.filter((p) => p.id !== id);
-    guardar(nuevo);
+    guardar(carrito.filter((p) => p.id !== id));
   };
 
   // Vaciar carrito
@@ -28,20 +29,26 @@ export default function CarritoPage() {
     guardar([]);
   };
 
-  // Total $
+  // Calcular total
   const total = carrito.reduce((acc, item) => acc + Number(item.precio), 0);
 
-
-
   // ===========================
-  // FINALIZAR COMPRA → EMAIL
+  // FINALIZAR COMPRA (EMAIL)
   // ===========================
   const finalizarCompra = async () => {
     try {
-      const res = await axios.post("http://localhost:4000/enviar-correo", {
-        items: carrito,
-        total: total,
-      });
+      const res = await axios.post(
+        "http://localhost:4000/email/enviar-correo",
+        {
+          items: carrito,
+          total: total,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // ⬅ IMPORTANTE
+          },
+        }
+      );
 
       if (res.data.ok) {
         alert("Compra realizada. Se envió un correo con el detalle.");
@@ -86,7 +93,7 @@ export default function CarritoPage() {
                   <p className="mb-0 text-muted">${item.precio}</p>
                 </div>
 
-                {/* Botón eliminar */}
+                {/* Eliminar */}
                 <button
                   className="btn btn-outline-danger"
                   onClick={() => eliminar(item.id)}
@@ -97,7 +104,7 @@ export default function CarritoPage() {
             ))}
           </div>
 
-          {/* Total + acciones */}
+          {/* Total y acciones */}
           <div className="card p-3 shadow-sm">
             <h4 className="fw-bold">Total: ${total}</h4>
 
@@ -106,10 +113,7 @@ export default function CarritoPage() {
                 Vaciar carrito
               </button>
 
-              <button
-                className="btn btn-success"
-                onClick={finalizarCompra}
-              >
+              <button className="btn btn-success" onClick={finalizarCompra}>
                 Finalizar compra
               </button>
             </div>
