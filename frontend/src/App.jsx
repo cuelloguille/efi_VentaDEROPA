@@ -4,9 +4,12 @@ import { AuthProvider } from "./auth/AuthContext";
 import Navbar from "./componnets/navbar";  // ⬅️ IMPORTAR NAVBAR
 
 import LoginPage from "./pages/LoginPage";
-import ClothesPage from "./pages/ClothesList";
+import ClothesList from "./pages/adminpages/ClothesList";
 import RegisterPage from "./pages/RegisterPage";
-import ClotheForm from "./pages/ClothesForm";
+import ClotheForm from "./pages/adminpages/ClothesForm";
+import ClotheEdit from "./pages/adminpages/ClotheEdit";
+import PageClothes from "./pages/PageClothes";
+import ClotheDetailUser from "./pages/PageClotheUser";
 
 function App() {
   return (
@@ -18,8 +21,13 @@ function App() {
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/prendas" element={<ClothesPage />} />
+          <Route path="/listaPrendas" element={<ClothesList />} />
           <Route path="/prendas/nueva" element={<ClotheForm />} />
+          <Route path="/prendas/editar/:id" element={<ClotheEdit />} />
+          <Route path="/prendas" element={<PageClothes />} />
+          <Route path="/prendas/:id" element={<ClotheDetailUser />} />
+
+          
         </Routes>
 
       </BrowserRouter>

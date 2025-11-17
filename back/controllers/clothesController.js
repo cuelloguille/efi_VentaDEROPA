@@ -107,3 +107,29 @@ exports.remove = async (req, res) => {
     res.status(500).json({ msg: "Error al eliminar la prenda", error });
   }
 };
+
+// ===============================
+//  OBTENER PRENDA POR ID
+// ===============================
+exports.getOne = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const clothe = await Clothe.findByPk(id, {
+      include: [
+        { model: Category, as: "Category" },
+        { model: Supplier, as: "Supplier" }
+      ]
+    });
+
+    if (!clothe) {
+      return res.status(404).json({ message: "Prenda no encontrada" });
+    }
+
+    return res.json(clothe);
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error al obtener la prenda" });
+  }
+};

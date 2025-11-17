@@ -11,9 +11,16 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark px-3">
+    <nav
+      className={`navbar navbar-expand-lg px-3 ${
+        rol === "admin" ? "navbar-dark bg-primary" : "navbar-dark bg-dark"
+      }`}
+    >
       <div className="container-fluid">
-        <Link className="navbar-brand" to="/prendas">Venta de Ropa</Link>
+        <Link className="navbar-brand" to="/prendas">
+          {rol === "admin" ? "Bienvenido Admin" : "ClotStore"}
+        </Link>
+
         <button
           className="navbar-toggler"
           type="button"
@@ -30,27 +37,46 @@ export default function Navbar() {
           <ul className="navbar-nav ms-auto">
             {!token && (
               <>
-                <li className="nav-item"><Link className="nav-link" to="/">Login</Link></li>
-                <li className="nav-item"><Link className="nav-link" to="/register">Registro</Link></li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/">Login</Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/register">Registro</Link>
+                </li>
               </>
             )}
 
             {token && rol === "admin" && (
               <>
-                <li className="nav-item"><Link className="nav-link" to="/prendas">Lista de Prendas</Link></li>
-                <li className="nav-item"><Link className="nav-link" to="/prendas/nueva">Crear Prenda</Link></li>
-                <li className="nav-item"><Link className="nav-link" to="/admin">Panel Admin</Link></li>
                 <li className="nav-item">
-                  <button className="btn btn-danger ms-2" onClick={handleLogout}>Cerrar sesión</button>
+                  <Link className="nav-link" to="/listaPrendas">
+                  Panel de administracion 
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/Prendas">
+                  Vista user
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <button className="btn btn-danger ms-2" onClick={handleLogout}>
+                    Cerrar sesión
+                  </button>
                 </li>
               </>
             )}
 
             {token && rol === "user" && (
               <>
-                <li className="nav-item"><Link className="nav-link" to="/prendas">Lista de Prendas</Link></li>
                 <li className="nav-item">
-                  <button className="btn btn-danger ms-2" onClick={handleLogout}>Cerrar sesión</button>
+                  <Link className="nav-link" to="/prendas">
+                    Lista de Prendas
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <button className="btn btn-danger ms-2" onClick={handleLogout}>
+                    Cerrar sesión
+                  </button>
                 </li>
               </>
             )}

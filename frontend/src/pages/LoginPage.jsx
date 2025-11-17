@@ -22,7 +22,7 @@ export default function LoginPage() {
       login(res.data.token, res.data.user.rol);
 
       // Redirigir según rol
-      if (res.data.user.rol === "admin") navigate("/admin");
+      if (res.data.user.rol === "admin") navigate("/listaPrendas");
       else navigate("/prendas");
     } catch (err) {
       setError(err.response?.data?.msg || "Credenciales incorrectas");
