@@ -38,51 +38,37 @@ export default function CarritoPage() {
   const [carrito, setCarrito] = useState([]);
   const { token } = useAuth();
 
-  // 🔥 ESTADOS NUEVOS PARA FILTRO Y ORDEN
   const [precioFiltro, setPrecioFiltro] = useState("");
   const [orden, setOrden] = useState("");
 
-  // Cargar carrito desde localStorage
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("carrito")) || [];
     setCarrito(data);
   }, []);
 
-  // Guardar cambios
   const guardar = (items) => {
     setCarrito(items);
     localStorage.setItem("carrito", JSON.stringify(items));
   };
 
-  // Eliminar item
   const eliminar = (id) => {
     guardar(carrito.filter((p) => p.id !== id));
     showToast("Producto eliminado del carrito 🗑️", "warn");
   };
 
-  // Vaciar carrito
   const vaciar = () => {
     guardar([]);
     showToast("Carrito vaciado ❗", "warn");
   };
 
-  // Calcular total
   const total = carrito.reduce((acc, item) => acc + Number(item.precio), 0);
 
-  // FINALIZAR COMPRA (EMAIL)
   const finalizarCompra = async () => {
     try {
       const res = await axios.post(
         "http://localhost:4000/email/enviar-correo",
-        {
-          items: carrito,
-          total: total,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        { items: carrito, total: total },
+        { headers: { Authorization: `Bearer ${token}` } }
       );
 
       if (res.data.ok) {
@@ -95,9 +81,6 @@ export default function CarritoPage() {
     }
   };
 
-  // ================================
-  // 🔥 FILTRAR + ORDENAR CARRITO
-  // ================================
   let carritoFiltrado = carrito.filter(
     (item) =>
       precioFiltro === "" || Number(item.precio) <= Number(precioFiltro)
@@ -117,7 +100,6 @@ export default function CarritoPage() {
     <div className="container mt-4">
       <h2 className="fw-bold text-center mb-4">Tu Carrito</h2>
 
-      {/* 🔥 ZONA DE FILTRO + ORDEN */}
       {carrito.length > 0 && (
         <div className="mb-4 d-flex gap-3">
           <input
@@ -150,59 +132,74 @@ export default function CarritoPage() {
       ) : (
         <>
           <div className="list-group mb-4">
-            {carritoFiltrado.map((item) => (
-              <div
-                key={item.id}
-                className="list-group-item d-flex align-items-center"
-              >
-                {/* Imagen */}
-                <img
-                  src={`http://localhost:4000/uploads/${item.imagen}`}
-                  alt={item.nombre}
-                  style={{ width: "70px", height: "70px", objectFit: "cover" }}
-                  className="rounded me-3"
-                />
+            {carritoFiltrado.map((item) => {
+              // 🔥 DETECTAR SI ES ZAPATILLA
+              const esZapatilla =
+                item.categoria?.toLowerCase() === "zapatillas" ||
+                item.Category?.nombre?.toLowerCase() === "zapatillas";
 
-                {/* Info + Talla */}
-                <div className="flex-grow-1">
-                  <h5 className="mb-1">{item.nombre}</h5>
-                  <p className="mb-1 text-muted">${item.precio}</p>
+              const tallesRopa = ["S", "M", "L", "XL"];
+              const tallesZapatilla = ["39", "40", "41", "42", "43", "44"];
 
-                  {/* ⭐ Selector de talla */}
-                  <div className="d-flex align-items-center">
-                    <label className="me-2 fw-semibold">Talle:</label>
-                    <select
-                      className="form-select form-select-sm w-auto"
-                      value={item.talla || "S"}
-                      onChange={(e) => {
-                        const nuevaTalla = e.target.value;
-                        const actualizado = carrito.map((p) =>
-                          p.id === item.id ? { ...p, talla: nuevaTalla } : p
-                        );
-                        guardar(actualizado);
-                        showToast("Talle actualizado ✔️", "success");
-                      }}
-                    >
-                      <option value="S">S</option>
-                      <option value="M">M</option>
-                      <option value="L">L</option>
-                      <option value="XL">XL</option>
-                    </select>
-                  </div>
-                </div>
+              const talles = esZapatilla ? tallesZapatilla : tallesRopa;
 
-                {/* Eliminar */}
-                <button
-                  className="btn btn-outline-danger"
-                  onClick={() => eliminar(item.id)}
+              return (
+                <div
+                  key={item.id}
+                  className="list-group-item d-flex align-items-center"
                 >
-                  <i className="bi bi-trash"></i>
-                </button>
-              </div>
-            ))}
+                  <img
+                    src={`http://localhost:4000/uploads/${item.imagen}`}
+                    alt={item.nombre}
+                    style={{
+                      width: "70px",
+                      height: "70px",
+                      objectFit: "cover",
+                    }}
+                    className="rounded me-3"
+                  />
+
+                  <div className="flex-grow-1">
+                    <h5 className="mb-1">{item.nombre}</h5>
+                    <p className="mb-1 text-muted">${item.precio}</p>
+
+                    {/* ⭐ Selector de talla dinámico */}
+                    <div className="d-flex align-items-center">
+                      <label className="me-2 fw-semibold">Talle:</label>
+                      <select
+                        className="form-select form-select-sm w-auto"
+                        value={item.talla || talles[0]}
+                        onChange={(e) => {
+                          const nuevaTalla = e.target.value;
+
+                          const actualizado = carrito.map((p) =>
+                            p.id === item.id ? { ...p, talla: nuevaTalla } : p
+                          );
+
+                          guardar(actualizado);
+                          showToast("Talle actualizado ✔️", "success");
+                        }}
+                      >
+                        {talles.map((t) => (
+                          <option key={t} value={t}>
+                            {t}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+
+                  <button
+                    className="btn btn-outline-danger"
+                    onClick={() => eliminar(item.id)}
+                  >
+                    <i className="bi bi-trash"></i>
+                  </button>
+                </div>
+              );
+            })}
           </div>
 
-          {/* Total y acciones */}
           <div className="card p-3 shadow-sm">
             <h4 className="fw-bold">Total: ${total}</h4>
 
