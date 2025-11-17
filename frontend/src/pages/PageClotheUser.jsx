@@ -1,16 +1,33 @@
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import axiosClient from "../api/axiosCLient";
 
 export default function ClotheDetailUser() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [clothe, setClothe] = useState(null);
 
   useEffect(() => {
-    axiosClient.get(`/clothes/${id}`)
-      .then(res => setClothe(res.data))
-      .catch(err => console.log(err));
+    axiosClient
+      .get(`/clothes/${id}`)
+      .then((res) => setClothe(res.data))
+      .catch((err) => console.log(err));
   }, [id]);
+
+  // ----------------------------
+  // AGREGAR AL CARRITO
+  // ----------------------------
+  const agregarCarrito = () => {
+    const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+
+    // Evitar duplicados
+    const existe = carrito.find((p) => p.id === clothe.id);
+    if (!existe) carrito.push(clothe);
+
+    localStorage.setItem("carrito", JSON.stringify(carrito));
+
+    navigate("/carrito"); // redirige automáticamente
+  };
 
   if (!clothe) {
     return (
@@ -45,7 +62,7 @@ export default function ClotheDetailUser() {
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
-                  color: "#777"
+                  color: "#777",
                 }}
               >
                 Sin imagen
@@ -71,13 +88,19 @@ export default function ClotheDetailUser() {
 
             <h5 className="mt-3">Descripción</h5>
             <p className="text-muted">
-              Esta es una prenda de alta calidad, seleccionada especialmente confiando en el confort y lo que 
-              representa nuestra marca
+              Esta es una prenda de alta calidad, seleccionada especialmente confiando en
+              el confort y lo que representa nuestra marca.
             </p>
 
-            <Link to="/prendas" className="btn btn-secondary mt-3">
-              ← Volver al catálogo
-            </Link>
+            <div className="d-flex gap-2 mt-3">
+              <Link to="/prendas" className="btn btn-secondary">
+                ← Volver al catálogo
+              </Link>
+
+              <button onClick={agregarCarrito} className="btn btn-primary">
+                Agregar al carrito 🛒
+              </button>
+            </div>
 
           </div>
 

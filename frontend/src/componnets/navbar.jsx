@@ -35,6 +35,8 @@ export default function Navbar() {
 
         <div className="collapse navbar-collapse" id="navbarContent">
           <ul className="navbar-nav ms-auto">
+
+            {/* LINKS PARA NO LOGUEADOS */}
             {!token && (
               <>
                 <li className="nav-item">
@@ -46,26 +48,24 @@ export default function Navbar() {
               </>
             )}
 
+            {/* LINKS ADMIN */}
             {token && rol === "admin" && (
               <>
                 <li className="nav-item">
                   <Link className="nav-link" to="/listaPrendas">
-                  Panel de administracion 
+                    Panel de administración
                   </Link>
                 </li>
+
                 <li className="nav-item">
-                  <Link className="nav-link" to="/Prendas">
-                  Vista user
+                  <Link className="nav-link" to="/prendas">
+                    Vista User
                   </Link>
-                </li>
-                <li className="nav-item">
-                  <button className="btn btn-danger ms-2" onClick={handleLogout}>
-                    Cerrar sesión
-                  </button>
                 </li>
               </>
             )}
 
+            {/* LINKS USER */}
             {token && rol === "user" && (
               <>
                 <li className="nav-item">
@@ -73,13 +73,30 @@ export default function Navbar() {
                     Lista de Prendas
                   </Link>
                 </li>
-                <li className="nav-item">
-                  <button className="btn btn-danger ms-2" onClick={handleLogout}>
-                    Cerrar sesión
-                  </button>
-                </li>
               </>
             )}
+
+            {/* CARRITO - SOLO LOGUEADOS */}
+            {token && (
+              <li className="nav-item d-flex align-items-center">
+                <Link className="nav-link fs-4" to="/carrito">
+                  <i className="bi bi-cart"></i>
+                </Link>
+              </li>
+            )}
+
+            {/* LOGOUT */}
+            {token && (
+              <li className="nav-item">
+                <button
+                  className="btn btn-danger ms-2"
+                  onClick={handleLogout}
+                >
+                  Cerrar sesión
+                </button>
+              </li>
+            )}
+
           </ul>
         </div>
       </div>

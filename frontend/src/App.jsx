@@ -10,6 +10,7 @@ import ClotheForm from "./pages/adminpages/ClothesForm";
 import ClotheEdit from "./pages/adminpages/ClotheEdit";
 import PageClothes from "./pages/PageClothes";
 import ClotheDetailUser from "./pages/PageClotheUser";
+import CartPage from "./pages/CartPage";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="/prendas/editar/:id" element={<ClotheEdit />} />
           <Route path="/prendas" element={<PageClothes />} />
           <Route path="/prendas/:id" element={<ClotheDetailUser />} />
+          <Route path="/carrito" element={<CartPage />} />
 
           
         </Routes>
