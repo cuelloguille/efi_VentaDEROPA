@@ -18,7 +18,7 @@ export default function Navbar() {
     >
       <div className="container-fluid">
 
-        {/* HOME ICONO A LA IZQUIERDA */}
+        {/* LOGO */}
         <Link className="navbar-brand d-flex align-items-center" to="/prendas">
           <i className="bi bi-house-door-fill fs-4 me-2"></i>
           {rol === "admin" ? "Bienvenido Admin" : "ClotStore"}
@@ -29,9 +29,6 @@ export default function Navbar() {
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#navbarContent"
-          aria-controls="navbarContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
         >
           <span className="navbar-toggler-icon"></span>
         </button>
@@ -39,7 +36,7 @@ export default function Navbar() {
         <div className="collapse navbar-collapse" id="navbarContent">
           <ul className="navbar-nav ms-auto">
 
-            {/* LINKS PARA NO LOGUEADOS */}
+            {/* LINKS NO LOGUEADOS */}
             {!token && (
               <>
                 <li className="nav-item">
@@ -61,6 +58,18 @@ export default function Navbar() {
                 </li>
 
                 <li className="nav-item">
+                  <Link className="nav-link" to="/categorias">
+                    Categorías
+                  </Link>
+                </li>
+
+                <li className="nav-item">
+                  <Link className="nav-link" to="/proveedores">
+                    Proveedores
+                  </Link>
+                </li>
+
+                <li className="nav-item">
                   <Link className="nav-link" to="/prendas">
                     Vista User
                   </Link>
@@ -68,17 +77,16 @@ export default function Navbar() {
               </>
             )}
 
-
             {/* CARRITO */}
             {token && (
               <li className="nav-item d-flex align-items-center">
-                <Link className="nav-link fs-4" to="/carrito" title="Carrito">
+                <Link className="nav-link fs-4" to="/carrito">
                   <i className="bi bi-cart"></i>
                 </Link>
               </li>
             )}
 
-            {/* BOTÓN DE LOGOUT CON ICONO DE APAGADO */}
+            {/* LOGOUT */}
             {token && (
               <li className="nav-item">
                 <button
