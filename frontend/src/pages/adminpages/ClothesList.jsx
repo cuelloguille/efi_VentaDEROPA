@@ -4,6 +4,9 @@ import { Link } from "react-router-dom";
 
 export default function ClothesPage() {
   const [clothes, setClothes] = useState([]);
+  const [filtroNombre, setFiltroNombre] = useState("");
+  const [filtroCategoria, setFiltroCategoria] = useState("");
+  const [filtroProveedor, setFiltroProveedor] = useState("");
 
   const cargar = () => {
     axiosClient.get("/clothes")
@@ -25,12 +28,29 @@ export default function ClothesPage() {
         headers: { Authorization: `bearer ${token}` }
       });
 
-      cargar(); // refrescar tabla
+      cargar();
     } catch (error) {
       console.log(error);
       alert("Error al eliminar la prenda");
     }
   };
+
+  // ============================================
+  // FILTROS
+  // ============================================
+  const prendasFiltradas = clothes.filter((c) => {
+    const coincideNombre = c.nombre.toLowerCase().includes(filtroNombre.toLowerCase());
+    const coincideCategoria = filtroCategoria ? c.Category?.nombre === filtroCategoria : true;
+    const coincideProveedor = filtroProveedor ? c.Supplier?.nombre === filtroProveedor : true;
+
+    return coincideNombre && coincideCategoria && coincideProveedor;
+  });
+
+  // Categorías únicas
+  const categorias = [...new Set(clothes.map(c => c.Category?.nombre).filter(Boolean))];
+
+  // Proveedores únicos
+  const proveedores = [...new Set(clothes.map(c => c.Supplier?.nombre).filter(Boolean))];
 
   return (
     <div className="container mt-4">
@@ -40,6 +60,60 @@ export default function ClothesPage() {
         Crear nueva
       </Link>
 
+      {/* ====================== */}
+      {/* FILTROS */}
+      {/* ====================== */}
+      <div className="card p-3 mb-4 shadow-sm">
+        <div className="row g-3">
+
+          {/* Buscar por nombre */}
+          <div className="col-md-4">
+            <label className="form-label fw-bold">Buscar por nombre</label>
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Ej: Remera, Campera..."
+              value={filtroNombre}
+              onChange={(e) => setFiltroNombre(e.target.value)}
+            />
+          </div>
+
+          {/* Filtrar por categoría */}
+          <div className="col-md-4">
+            <label className="form-label fw-bold">Categoría</label>
+            <select
+              className="form-select"
+              value={filtroCategoria}
+              onChange={(e) => setFiltroCategoria(e.target.value)}
+            >
+              <option value="">Todas</option>
+              {categorias.map((cat) => (
+                <option key={cat} value={cat}>{cat}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Filtrar por proveedor */}
+          <div className="col-md-4">
+            <label className="form-label fw-bold">Proveedor</label>
+            <select
+              className="form-select"
+              value={filtroProveedor}
+              onChange={(e) => setFiltroProveedor(e.target.value)}
+            >
+              <option value="">Todos</option>
+              {proveedores.map((prov) => (
+                <option key={prov} value={prov}>{prov}</option>
+              ))}
+            </select>
+          </div>
+
+        </div>
+      </div>
+
+      {/* ====================== */}
+      {/* TABLA */}
+      {/* ====================== */}
       <table className="table table-striped mt-3">
         <thead>
           <tr>
@@ -51,11 +125,12 @@ export default function ClothesPage() {
             <th>Stock</th>
             <th>Categoría</th>
             <th>Proveedor</th>
-            <th>Acciones</th> {/* nueva columna */}
+            <th>Acciones</th>
           </tr>
         </thead>
+
         <tbody>
-          {clothes.map(c => (
+          {prendasFiltradas.map((c) => (
             <tr key={c.id}>
               <td>
                 {c.imagen ? (
@@ -78,7 +153,6 @@ export default function ClothesPage() {
               <td>{c.Category?.nombre || "-"}</td>
               <td>{c.Supplier?.nombre || "-"}</td>
 
-              {/* ACCIONES */}
               <td>
                 <Link
                   to={`/prendas/editar/${c.id}`}
