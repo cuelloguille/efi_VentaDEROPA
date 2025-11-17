@@ -3,9 +3,9 @@ const router = express.Router();
 const nodemailer = require("nodemailer");
 const auth = require("../midlewares/auth"); // Middleware de autenticación
 
-// ===============================
+// ==============================
 //      ENVIAR CORREO
-// ===============================
+// ==============================
 router.post("/enviar-correo", auth, async (req, res) => {
   try {
     const { items, total } = req.body;
