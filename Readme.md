@@ -37,11 +37,11 @@ pip install -r requirements.txt
 * README.md
 * package-lock.json
 
-## Ejemplo visual del proyecto
 
-### Backend
 
-1. Configuración del entorno
+## Backend
+
+### 1. Configuración del entorno
 
 Crear un archivo .env en la carpeta backend con las siguientes variables de entorno:
 
@@ -52,12 +52,12 @@ DB_HOST=localhost
 PORT=4000
 JWT_SECRET=miclaveultrasecreta123
 
-2. Instalar las dependencias
+### 2. Instalar las dependencias
 
 cd back
 npm install
 
-3. Configurar la base de datos
+### 3. Configurar la base de datos
 
 sudo mysql -u root
 
@@ -74,7 +74,7 @@ FLUSH PRIVILEGES;
 
 exit
 
-4. Ejecutar backend
+### 4. Ejecutar backend
 
 cd back
 npm start
@@ -134,20 +134,13 @@ POST → Envía correo de confirmación de compra
 
 
 en este archivo se trabajo la vista del administrador como organizador de la pagina y la vista del usuario como comprador
-
 pudiendo el administrador crear, editar y eliminar prendas y categorias y proveedores y el usuario comprar prendas y ver el carrito
-
 con esto se crearon un backend y un frontend para la tienda de ropa y calzado
-
 el usuario puede logear comprar diferentes prendas y calzados y una ves realizada la compra se le envia un correo con el detalle de la compra
-
 esto no esta a modo de muestra sino que es algo funcional
-
 y todo lo demas tambien como el navegador en el cual podes filtrar la busqueda 
-
 la creacion de ropa en el admin  
-
 limpiar el carrito  y de mas 
 
 
-el trabajo fue realizado por los alumnos guillermo cuello , agostina bringas , micaela Cortez y bruno Sanches como parte del trabajo final (efi).
+El trabajo fue realizado por los alumnos guillermo cuello , agostina bringas , micaela Cortez y bruno Sanches como parte del trabajo final (efi).
