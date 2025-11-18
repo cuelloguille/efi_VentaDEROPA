@@ -16,17 +16,19 @@ const userRoutes = require("./routes/userRoutes");
 const clothesRoutes = require("./routes/clothesRoutes");
 const salesRoutes = require("./routes/saleRoutes");
 const categoryRoutes = require("./routes/categoryRoutes"); 
-const supplierRoutes = require("./routes/supplierRoutes")
+const supplierRoutes = require("./routes/supplierRoutes");
 const Email = require("./routes/EmailRoutes");
 
 const app = express();
 
 // ✅ Middleware CORS
-app.use(cors({
-  origin: "http://localhost:5173", // Origen permitido (tu frontend)
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Métodos permitidos
-  credentials: true, // Si usas cookies o auth
-}));
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true,
+  })
+);
 
 // ✅ Middleware para parsear JSON
 app.use(express.json());
@@ -47,7 +49,7 @@ app.use("/email", Email);
 
 // Sincronizar DB y levantar servidor
 sequelize
-  .sync({ alter: true }) // ⚠️ cambiar a { force: true } si querés recrear tablas
+  .sync() // 🔥 Ya no crea ni modifica tablas
   .then(() => {
     console.log("Base de datos sincronizada ✅");
     app.listen(process.env.PORT || 4000, () => {
