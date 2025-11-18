@@ -9,13 +9,14 @@ ClotStore es una tienda de ropa y calzado en línea desarrollada con React en el
 * Python ≥ 3.10 (para algunas dependencias opcionales)
 * MySQL ≥ 8.0
 
-## Instalación y configuración
+## Instalación
 
-1. Clonar el repositorio
+1. Clonar el repositorio:
 
-git clone <https://github.com/cuelloguille/efi_VentaDEROPA/commits/main/>
-
-cd <efi_VentaDEROPA>
+```bash
+git clone https://github.com/cuelloguille/efi_VentaDEROPA.git
+cd efi_VentaDEROPA
+```
 
 2. Instalar las dependencias
 
@@ -131,3 +132,20 @@ CRUD completo con subida de imágenes y relación con categoría y proveedor
 Carrito / Compra: /email/enviar-correo
 
 POST → Envía correo de confirmación de compra
+
+
+en este archivo se trabajo la vista del administrador como organizador de la pagina y la vista del usuario como comprador
+
+pudiendo el administrador crear, editar y eliminar prendas y categorias y proveedores y el usuario comprar prendas y ver el carrito
+
+con esto se crearon un backend y un frontend para la tienda de ropa y calzado
+
+el usuario puede logear comprar diferentes prendas y calzados y una ves realizada la compra se le envia un correo con el detalle de la compra
+
+esto no esta a modo de muestra sino que es algo funcional
+
+y todo lo demas tambien como el navegador en el cual podes filtrar la busqueda 
+
+la creacion de ropa en el admin  
+
+limpiar el carrito  y de mas
