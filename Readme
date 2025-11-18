@@ -1,19 +1,16 @@
-
+# ClotStore
 
 ClotStore es una tienda de ropa y calzado en línea desarrollada con React en el frontend y Node.js + Express + MySQL + Sequelize en el backend. Incluye gestión de usuarios, productos, categorías y proveedores, carrito de compras, y envío de correo al finalizar la compra.
 
+## Requisitos
 
-Requisitos
+* Node.js ≥ 18
+* npm ≥ 9
+* Python ≥ 3.10 (para algunas dependencias opcionales)
+* MySQL ≥ 8.0
 
-Node.js ≥ 18
+## Instalación y configuración
 
-npm ≥ 9
-
-Python ≥ 3.10 (para algunas dependencias opcionales)
-
-MySQL ≥ 8.0
-
-Instalación y configuración
 1. Clonar el repositorio
 
 git clone <https://github.com/cuelloguille/efi_VentaDEROPA/commits/main/>
@@ -24,25 +21,25 @@ cd <efi_VentaDEROPA>
 
 pip install -r requirements.txt
 
-3. Estructura del proyecto
+## Estructura del proyecto
 
-├── backend
-│   ├── config
-│   ├── controllers
-│   ├── models
-│   ├── routes
-│   ├── server.js
-│   └── utils
-├── frontend
-│   ├── public
-│   ├── src
-│   └── vite.config.js
-├── README.md
-└── package-lock.json
+* backend
+	+ config
+	+ controllers
+	+ models
+	+ routes
+	+ server.js
+	+ utils
+* frontend
+	+ public
+	+ src
+	+ vite.config.js
+* README.md
+* package-lock.json
 
-ejemplo visual del proyecto
+## Ejemplo visual del proyecto
 
-Backend
+### Backend
 
 1. Configuración del entorno
 
@@ -77,18 +74,18 @@ FLUSH PRIVILEGES;
 
 exit
 
-4.ejecutar backend
+4. Ejecutar backend
 
 cd back
 npm start
 o
 npm run dev
 
-deberia verse algo como 
+deberia en algo como
 El backend estará corriendo en http://localhost:4000.
 
 
-Frontend
+### Frontend
 
 1. Instalar las dependencias
 
@@ -97,15 +94,15 @@ npm install
 
 2. Iniciar el servidor de desarrollo
 
-npm run dev 
+npm run dev
 
-deberia verse algo como
-El frontend estará corriendo  en http://localhost:5173
+deberia en algo como
+El frontend estará corriendo en http://localhost:5173
 
-⚠️ Importante: Para que el proyecto funcione correctamente, el backend debe estar corriendo al mismo tiempo que el frontend.
 
-Rutas principales
-Backend
+### Rutas principales
+
+### Backend
 
 Categorias: /categories
 
